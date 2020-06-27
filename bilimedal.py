@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# # -*- coding: gbk -*-
+# # -*- coding: utf-8 -*-
 import requests
 import json
 import re
@@ -34,21 +34,21 @@ def getMedal(roomid, ruid):
         else:
             return ''
     except:
-        log.append('·¿¼ä' + str(roomid) + 'ÅÀÈ¡Ê§°Ü')
+        log.append('æˆ¿é—´' + str(roomid) + 'çˆ¬å–å¤±è´¥')
 
 medaldict = {}
 log = []
 regex_ruid = re.compile(r'(?<="uid":)\d*')
 regex_medal = re.compile(r'(?<="medal_name":")[^"]*')
 num = 23500000
-print('ÅÀÈ¡¿ªÊ¼')
+print('çˆ¬å–å¼€å§‹')
 for i in range(1, num):
     medalname = getMedal(i, getRuid(i))
     if medalname:
         medaldict[medalname] = i
     if i % 1000 == 0:
         print('{:.2f}% compelete'.format(i * 100 / num))
-print('\nÅÀÈ¡½áÊø')
+print('\nçˆ¬å–ç»“æŸ')
 with open('log.json', 'w') as logfile:
     json.dump(log, logfile, ensure_ascii=False)
 with open('medal.json', 'w') as f:
