@@ -40,15 +40,14 @@ medaldict = {}
 log = []
 regex_ruid = re.compile(r'(?<="uid":)\d*')
 regex_medal = re.compile(r'(?<="medal_name":")[^"]*')
-print('哔哩哔哩直播粉丝勋章爬取脚本')
-num1, num2 = map(int, input('请输入爬取的房间号范围\n').split())
-sum = num2 - num1 + 1
+num = 23500000
 print('爬取开始')
-for i in range(num1, num2 + 1):
+for i in range(1, num):
     medalname = getMedal(i, getRuid(i))
     if medalname:
         medaldict[medalname] = i
-    print('已爬取{}/{}, {:.2f}% complete\r'.format(i - num1 + 1, sum, (i - num1 + 1) * 100 / sum), end='')
+    if i % 1000 == 0:
+        print('{:.2f}% compelete'.format(i * 100 / num))
 print('\n爬取结束')
 with open('log.json', 'w') as logfile:
     json.dump(log, logfile, ensure_ascii=False)
