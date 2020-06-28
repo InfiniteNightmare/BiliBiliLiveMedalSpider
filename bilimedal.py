@@ -38,7 +38,8 @@ def getMedal(roomid, ruid):
         else:
             return ''
     except:
-        print('房间' + str(roomid) + '爬取失败', file=logfile)
+        with open('medal.txt', 'a', encoding='utf-8') as medalfile:
+            print('房间' + str(roomid) + '爬取失败', file=medalfile)
 
 medaldict = {}
 regex_ruid = re.compile(r'(?<="uid":)\d*')
