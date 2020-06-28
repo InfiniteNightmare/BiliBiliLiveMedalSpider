@@ -4,15 +4,17 @@ import requests
 import json
 import re
 
+
 def getHTML(url, params=None):
     try:
-        headers = {'user-agent':'Chrome/83'}
+        headers = {'user-agent': 'Chrome/83'}
         r = requests.get(url, params=params, headers=headers)
         r.encoding = 'utf-8'
         r.raise_for_status
         return r.text
     except:
         return ''
+
 
 def getRuid(roomid):
     try:
@@ -22,6 +24,7 @@ def getRuid(roomid):
         return uid
     except:
         return AssertionError
+
 
 def getMedal(roomid, ruid):
     try:
@@ -34,22 +37,28 @@ def getMedal(roomid, ruid):
         else:
             return ''
     except:
-        log.append('房间' + str(roomid) + '爬取失败')
+        print('房间' + str(roomid) + '爬取失败', file=logfile)
 
 medaldict = {}
-log = []
 regex_ruid = re.compile(r'(?<="uid":)\d*')
 regex_medal = re.compile(r'(?<="medal_name":")[^"]*')
-num = 23500000
-print('爬取开始')
-for i in range(1, num):
+with open('settings.json', 'r') as f:
+    settings = json.load(f)
+    num1 = settings['num1']
+    num2 = settings['num2']
+num = num2 - num1 + 1
+num_percent = max(num // 10000, 1)
+with open('log.txt', 'w', encoding = 'utf-8') as logfile:
+    print('爬取开始', file=logfile)
+with open('medal.txt', 'w', encoding='utf-8') as medalfile:
+    print('勋章字典：', file=medalfile)
+for i in range(num1, num2):
     medalname = getMedal(i, getRuid(i))
     if medalname:
-        medaldict[medalname] = i
-    if i % 1000 == 0:
-        print('{:.2f}% compelete'.format(i * 100 / num))
-print('\n爬取结束')
-with open('log.json', 'w') as logfile:
-    json.dump(log, logfile, ensure_ascii=False)
-with open('medal.json', 'w') as f:
-    json.dump(medaldict, f, ensure_ascii=False)
+        with open('medal.txt', 'a', encoding='utf-8') as medalfile:
+            print('{}:{}'.format(medalname, i), file=medalfile)
+    if i % num_percent == 0:
+        with open('log.txt', 'w', encoding = 'utf-8') as logfile:
+            print('{}/{} {:.2f}% compelete'.format(i - num1 + 1 , num, i * 100 / num), file=logfile)
+with open('log.txt', 'a', encoding = 'utf-8') as logfile:
+    print('爬取结束', file=logfile)
