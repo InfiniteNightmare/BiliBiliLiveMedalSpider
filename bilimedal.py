@@ -3,6 +3,7 @@
 import requests
 import json
 import re
+import time
 
 
 def getHTML(url, params=None):
@@ -59,6 +60,6 @@ for i in range(num1, num2):
             print('{}:{}'.format(medalname, i), file=medalfile)
     if i % num_percent == 0:
         with open('log.txt', 'w', encoding = 'utf-8') as logfile:
-            print('{}/{} {:.2f}% compelete'.format(i - num1 + 1 , num, i * 100 / num), file=logfile)
+            print('{} {}/{} {:.2f}% compelete'.format(time.ctime(),i - num1 + 1 , num, i * 100 / num), file=logfile)
 with open('log.txt', 'a', encoding = 'utf-8') as logfile:
     print('爬取结束', file=logfile)
