@@ -67,6 +67,6 @@ for i in range(num1, num2):  # 遍历直播间
     if i % num_percent == 0:  # 显示进度
         with open('log.txt', 'w', encoding='utf-8') as logfile:  # 以写入模式打开"log.txt"
             print('{} {}/{} {:.2f}% compelete'.format(time.ctime(),
-                                                      i - num1 + 1, num, i * 100 / num), file=logfile)  # 输出当前时间、进度，增强用户体验
+                                                      i - num1 + 1, num, (i - num1) * 100 / num), file=logfile)  # 输出当前时间、进度，增强用户体验
 with open('log.txt', 'a', encoding='utf-8') as logfile:
     print('爬取结束', file=logfile)  # 爬取完毕，输出提示信息
